@@ -25,6 +25,48 @@ Rectangle {
         sourceSize.height: height
         width: height
         height: width
+
+        states: ["mouseIn", "mouseOut"]
+        state: "mouseOut"
+
+        transitions: [
+            Transition {
+                from: "*"
+                to: "mouseIn"
+
+                NumberAnimation {
+                    target: icon
+                    properties: "scale"
+                    from: 1
+                    to: 1.1
+                    duration: 150
+                    easing.type: Easing.OutCubic
+                }
+            },
+            Transition {
+                from: "*"
+                to: "mouseOut"
+
+                NumberAnimation {
+                    target: icon
+                    properties: "scale"
+                    from: 1.1
+                    to: 1
+                    duration: 150
+                    easing.type: Easing.InCubic
+                }
+            }
+        ]
+
+        MouseArea {
+            id: iconArea
+            anchors.fill: icon
+            hoverEnabled: true
+
+            onContainsMouseChanged: {
+                icon.state = containsMouse ? "mouseIn" : "mouseOut"
+            }
+        }
     }
 
     Label {
