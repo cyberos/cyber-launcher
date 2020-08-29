@@ -12,10 +12,6 @@ ApplicationWindow {
     flags: Qt.BypassWindowManagerHint | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
     id: root
 
-    property int columns: 6
-    property int rows: 0
-    property var appPages: []
-
     color: "transparent"
     background: Rectangle{
         color: "black"
@@ -33,14 +29,18 @@ ApplicationWindow {
 
     TextField {
         id: textField
-        height: 50
+        height: minimumHeight < calcHeight ? calcHeight : minimumHeight
         width: root.width * 0.2
         anchors.top: parent.top
         anchors.horizontalCenter: parent.horizontalCenter
-        anchors.margins: 50
+        anchors.margins: root.height * 0.05
+        placeholderText: qsTr("Search")
+
+        property var calcHeight: root.height * 0.03
+        property var minimumHeight: 35
 
         background: Rectangle {
-            opacity: 0.55
+            opacity: 0.8
             radius: textField.height * 0.2
         }
 

@@ -5,8 +5,7 @@ import QtQuick.Controls.Material 2.1
 Rectangle {
     property bool hovered: false
 
-    color: hovered ? Qt.rgba(0,0,0,0.1) : "transparent"
-    radius: 2
+    color: "transparent"
     antialiasing: true
 
     Image {
@@ -38,7 +37,7 @@ Rectangle {
                     target: icon
                     properties: "scale"
                     from: 1
-                    to: 1.1
+                    to: 1.2
                     duration: 150
                     easing.type: Easing.OutCubic
                 }
@@ -50,9 +49,9 @@ Rectangle {
                 NumberAnimation {
                     target: icon
                     properties: "scale"
-                    from: 1.1
+                    from: 1.2
                     to: 1
-                    duration: 150
+                    duration: 100
                     easing.type: Easing.InCubic
                 }
             }

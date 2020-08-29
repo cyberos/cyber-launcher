@@ -7,16 +7,16 @@ PagedGrid {
     property alias query: appsProxyModel.filterPattern
     property int cellSize: 130
     property int sideMargins: root.width * 0.1
-    property int itemSize: root.height * 0.15
+    property int itemSize: root.height * 0.17
 
-    rows: 4
-    columns: 6
+//    rows: 4
+//    columns: 6
+
+    rows: (root.height - root.height * 0.2) / itemSize
+    columns: (root.width - sideMargins * 2) / itemSize
 
     width: columns * itemSize
     height: rows * itemSize
-
-//    anchors.leftMargin: sideMargins
-//    anchors.rightMargin: sideMargins
 
     model: SortFilterProxyModel {
         id: appsProxyModel
