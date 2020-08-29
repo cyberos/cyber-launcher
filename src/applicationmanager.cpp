@@ -1,5 +1,24 @@
+/*
+ * Copyright (C) 2020 CyberOS.
+ *
+ * Author:     revenmartin <revenmartin@gmail.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include "applicationmanager.h"
-#include "application.h"
+#include "appitem.h"
 #include <QtConcurrent/QtConcurrentRun>
 #include <QFileSystemWatcher>
 #include <QDebug>
@@ -60,7 +79,7 @@ QVariant ApplicationManager::data(const QModelIndex &index, int role) const
     if (!index.isValid())
         return QVariant();
 
-    Application *app = m_apps.at(index.row());
+    AppItem *app = m_apps.at(index.row());
     if (!app)
         return QVariant();
 
@@ -78,18 +97,18 @@ QVariant ApplicationManager::data(const QModelIndex &index, int role) const
     }
 }
 
-Application *ApplicationManager::findApplication(const QString &appId)
+AppItem *ApplicationManager::findApplication(const QString &appId)
 {
-    for (Application *app : qAsConst(m_apps)) {
+    for (AppItem *app : qAsConst(m_apps)) {
         if (app->appId() == appId)
             return app;
     }
     return nullptr;
 }
 
-Application *ApplicationManager::newApplication(const QString &appId)
+AppItem *ApplicationManager::newApplication(const QString &appId)
 {
-    Application *app = new Application(appId, QStringList(), this);
+    AppItem *app = new AppItem(appId, QStringList(), this);
     app->moveToThread(thread());
     m_apps.append(app);
 
@@ -99,7 +118,7 @@ Application *ApplicationManager::newApplication(const QString &appId)
 void ApplicationManager::refresh(ApplicationManager *manager)
 {
     QStringList toRemove;
-    for (Application *app : qAsConst(manager->m_apps))
+    for (AppItem *app : qAsConst(manager->m_apps))
         toRemove.append(app->appId());
 
     QStringList addedEntries;
@@ -119,7 +138,7 @@ void ApplicationManager::refresh(ApplicationManager *manager)
     }
 
     for (const QString &appId : qAsConst(toRemove)) {
-        Application *app = manager->findApplication(appId);
+        AppItem *app = manager->findApplication(appId);
         if (app)
             QMetaObject::invokeMethod(manager, "removeApp", Q_ARG(QObject*, qobject_cast<QObject*>(app)));
     }
@@ -128,7 +147,7 @@ void ApplicationManager::refresh(ApplicationManager *manager)
     QMetaObject::invokeMethod(manager, "refreshed");
 }
 
-Application *ApplicationManager::get(int index) const
+AppItem *ApplicationManager::get(int index) const
 {
     if (index < 0 || index >= m_apps.size())
         return nullptr;
@@ -138,7 +157,7 @@ Application *ApplicationManager::get(int index) const
 
 QString ApplicationManager::getIconName(const QString &appId)
 {
-    Application *app = get(indexFromAppId(appId));
+    AppItem *app = get(indexFromAppId(appId));
     if (app)
         return app->iconName();
 
@@ -169,7 +188,7 @@ void ApplicationManager::addApp(const QString &appId)
 {
     beginInsertRows(QModelIndex(), m_apps.count(), m_apps.count());
 
-    Application *app = newApplication(appId);
+    AppItem *app = newApplication(appId);
     Q_EMIT applicationAdded(app);
 
     endInsertRows();
@@ -177,7 +196,7 @@ void ApplicationManager::addApp(const QString &appId)
 
 void ApplicationManager::removeApp(QObject *object)
 {
-    Application *app = qobject_cast<Application *>(object);
+    AppItem *app = qobject_cast<AppItem *>(object);
     if (!app)
         return;
 

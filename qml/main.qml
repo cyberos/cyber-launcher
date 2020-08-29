@@ -5,10 +5,9 @@ import QtQuick.Layouts 1.3
 import org.cyber.launcher 1.0
 
 ApplicationWindow {
-    visible: true
+    visible: false
     width: Screen.width
     height: Screen.height
-    visibility: Window.FullScreen
     flags: Qt.BypassWindowManagerHint | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
     id: root
 
@@ -16,6 +15,14 @@ ApplicationWindow {
     background: Rectangle{
         color: "black"
         opacity: 0.7
+    }
+
+    MouseArea {
+        anchors.fill: parent
+
+        onClicked: {
+            hideLauncher()
+        }
     }
 
     ApplicationManager {
@@ -48,7 +55,7 @@ ApplicationWindow {
             grid.query = text
         }
 
-        Keys.onEscapePressed: Qt.quit()
+        Keys.onEscapePressed: hideLauncher()
     }
 
     LauncherGridView {
@@ -65,5 +72,21 @@ ApplicationWindow {
         count: grid.pages
         currentIndex: grid.currentPage
         onCurrentIndexChanged: grid.currentPage = currentIndex
+    }
+
+    function showLauncher() {
+        root.visible = true;
+        root.visibility = Window.FullScreen
+    }
+
+    function hideLauncher() {
+        root.visible = false;
+    }
+
+    function toggle() {
+        if (root.visible)
+            hideLauncher()
+        else
+            showLauncher()
     }
 }

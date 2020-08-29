@@ -1,3 +1,22 @@
+/*
+ * Copyright (C) 2020 CyberOS.
+ *
+ * Author:     revenmartin <revenmartin@gmail.com>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #ifndef APPLICATIONMANAGER_H
 #define APPLICATIONMANAGER_H
 
@@ -5,7 +24,7 @@
 #include <QLoggingCategory>
 #include <QAbstractListModel>
 
-class Application;
+class AppItem;
 class ApplicationManager : public QAbstractListModel
 {
     Q_OBJECT
@@ -42,12 +61,12 @@ public:
     QHash<int, QByteArray> roleNames() const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
-    Application *findApplication(const QString &appId);
-    Application *newApplication(const QString &appId);
+    AppItem *findApplication(const QString &appId);
+    AppItem *newApplication(const QString &appId);
 
     static void refresh(ApplicationManager *manager);
 
-    Q_INVOKABLE Application *get(int index) const;
+    Q_INVOKABLE AppItem *get(int index) const;
 
     Q_INVOKABLE QString getIconName(const QString &appId);
     Q_INVOKABLE int indexFromAppId(const QString &appId) const;
@@ -60,16 +79,16 @@ public Q_SLOTS:
 
 Q_SIGNALS:
     void refreshed();
-    void applicationAdded(Application *app);
-    void applicationRemoved(Application *app);
-    void applicationLaunched(Application *app);
+    void applicationAdded(AppItem *app);
+    void applicationRemoved(AppItem *app);
+    void applicationLaunched(AppItem *app);
 
 private Q_SLOTS:
     void addApp(const QString &appId);
     void removeApp(QObject *object);
 
 private:
-    QList<Application *> m_apps;
+    QList<AppItem *> m_apps;
 };
 
 #endif // APPLICATIONMANAGER_H

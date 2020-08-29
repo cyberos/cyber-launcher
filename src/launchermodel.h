@@ -28,7 +28,7 @@
 #include <QtCore/QSortFilterProxyModel>
 #include <QtQml/QQmlComponent>
 
-class Application;
+class AppItem;
 class ApplicationManager;
 
 class LauncherModel : public QSortFilterProxyModel
@@ -39,7 +39,7 @@ public:
 
     void setSourceModel(QAbstractItemModel *sourceModel) override;
 
-    Q_INVOKABLE Application *get(int row) const;
+    Q_INVOKABLE AppItem *get(int row) const;
     Q_INVOKABLE int indexFromAppId(const QString &appId) const;
 
 protected:

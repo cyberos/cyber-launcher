@@ -45,7 +45,7 @@ void LauncherModel::setSourceModel(QAbstractItemModel *sourceModel)
     QSortFilterProxyModel::setSourceModel(sourceModel);
 }
 
-Application *LauncherModel::get(int row) const
+AppItem *LauncherModel::get(int row) const
 {
     if (!m_appMan)
         return nullptr;
