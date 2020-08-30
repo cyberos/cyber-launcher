@@ -16,9 +16,9 @@ find_package(Qt5 REQUIRED ${QT})
 set(SRCS
     src/appitem.cpp
     src/applicationmanager.cpp
+    src/desktopproperties.cpp
     src/iconthemeimageprovider.cpp
     src/launcher.cpp
-    src/launchermodel.cpp
     src/main.cpp
     src/pagemodel.cpp
     src/qqmlsortfilterproxymodel.cpp

@@ -19,8 +19,12 @@
 
 #include "applicationmanager.h"
 #include "appitem.h"
+#include "desktopproperties.h"
 #include <QtConcurrent/QtConcurrentRun>
+
 #include <QFileSystemWatcher>
+#include <QScopedPointer>
+#include <QProcess>
 #include <QDebug>
 #include <QIcon>
 
@@ -86,6 +90,8 @@ QVariant ApplicationManager::data(const QModelIndex &index, int role) const
     switch (role) {
     case Qt::DecorationRole:
         return QIcon::fromTheme(app->iconName());
+    case AppIdRole:
+        return app->appId();
     case NameRole:
         return app->name();
     case IconNameRole:
@@ -104,15 +110,6 @@ AppItem *ApplicationManager::findApplication(const QString &appId)
             return app;
     }
     return nullptr;
-}
-
-AppItem *ApplicationManager::newApplication(const QString &appId)
-{
-    AppItem *app = new AppItem(appId, QStringList(), this);
-    app->moveToThread(thread());
-    m_apps.append(app);
-
-    return app;
 }
 
 void ApplicationManager::refresh(ApplicationManager *manager)
@@ -134,7 +131,7 @@ void ApplicationManager::refresh(ApplicationManager *manager)
         addedEntries.append(filename);
 
         if (!manager->findApplication(filename))
-            QMetaObject::invokeMethod(manager, "addApp", Q_ARG(QString, filename));
+            QMetaObject::invokeMethod(manager, "loadApp", Q_ARG(QString, filename));
     }
 
     for (const QString &appId : qAsConst(toRemove)) {
@@ -174,24 +171,45 @@ int ApplicationManager::indexFromAppId(const QString &appId) const
     return -1;
 }
 
-bool ApplicationManager::launch(const QStringList &urls)
+bool ApplicationManager::launch(const QString &path)
 {
+    AppItem *app = findApplication(path);
+    if (app) {
+        QStringList args = app->args();
+        QScopedPointer<QProcess> p(new QProcess);
+        p->setStandardInputFile(QProcess::nullDevice());
+        p->setProcessChannelMode(QProcess::ForwardedChannels);
 
+        QString cmd = args.takeFirst();
+        p->setProgram(cmd);
+        p->setArguments(args);
+
+        Q_EMIT applicationLaunched();
+
+        return p->startDetached();
+    }
+
+    return false;
 }
 
-bool ApplicationManager::quit()
+void ApplicationManager::loadApp(const QString &fileName)
 {
-
+    AppItem *app = new AppItem(this);
+    connect(app, &AppItem::loadFinished, this, &ApplicationManager::addApp);
+    app->moveToThread(thread());
+    app->load(fileName);
 }
 
-void ApplicationManager::addApp(const QString &appId)
+void ApplicationManager::addApp(AppItem *item)
 {
-    beginInsertRows(QModelIndex(), m_apps.count(), m_apps.count());
-
-    AppItem *app = newApplication(appId);
-    Q_EMIT applicationAdded(app);
-
-    endInsertRows();
+    if (item->isValid()) {
+        beginInsertRows(QModelIndex(), m_apps.count(), m_apps.count());
+        m_apps.append(item);
+        Q_EMIT applicationAdded(item);
+        endInsertRows();
+    } else {
+        item->deleteLater();
+    }
 }
 
 void ApplicationManager::removeApp(QObject *object)

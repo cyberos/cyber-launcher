@@ -29,10 +29,13 @@ ApplicationWindow {
         id: applicationManager
     }
 
-//    LauncherModel {
-//        id: launcherModel
-//        sourceModel: applicationManager
-//    }
+    Connections {
+        target: applicationManager
+
+        function onApplicationLaunched() {
+            hideLauncher()
+        }
+    }
 
     TextField {
         id: textField
@@ -80,6 +83,7 @@ ApplicationWindow {
     }
 
     function hideLauncher() {
+        textField.text = ""
         root.visible = false;
     }
 

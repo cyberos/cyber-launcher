@@ -66,6 +66,14 @@ Rectangle {
         }
     }
 
+    MouseArea {
+        anchors.fill: parent
+
+        onClicked: {
+            applicationManager.launch(model.appId)
+        }
+    }
+
     Label {
         id: label
 

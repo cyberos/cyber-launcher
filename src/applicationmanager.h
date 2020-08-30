@@ -62,7 +62,6 @@ public:
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
     AppItem *findApplication(const QString &appId);
-    AppItem *newApplication(const QString &appId);
 
     static void refresh(ApplicationManager *manager);
 
@@ -72,19 +71,18 @@ public:
     Q_INVOKABLE int indexFromAppId(const QString &appId) const;
 
 public Q_SLOTS:
-    Q_INVOKABLE bool launch(const QStringList &urls);
-    Q_INVOKABLE bool quit();
-
-    Q_INVOKABLE bool launch() { return launch(QStringList()); }
+    Q_INVOKABLE bool launch(const QString &path);
+    Q_INVOKABLE bool launch() { return launch(QString()); }
 
 Q_SIGNALS:
     void refreshed();
     void applicationAdded(AppItem *app);
     void applicationRemoved(AppItem *app);
-    void applicationLaunched(AppItem *app);
+    void applicationLaunched();
 
 private Q_SLOTS:
-    void addApp(const QString &appId);
+    void loadApp(const QString &fileName);
+    void addApp(AppItem *item);
     void removeApp(QObject *object);
 
 private:

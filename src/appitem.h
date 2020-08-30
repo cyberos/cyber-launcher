@@ -21,7 +21,6 @@
 #define APPITEM_H
 
 #include <QObject>
-#include <QSettings>
 #include <QtQml>
 #include <QtQml/QQmlListProperty>
 
@@ -33,27 +32,35 @@ class AppItem : public QObject
     Q_PROPERTY(QString genericName READ genericName NOTIFY dataChanged)
     Q_PROPERTY(QString comment READ comment NOTIFY dataChanged)
     Q_PROPERTY(QString iconName READ iconName NOTIFY dataChanged)
+    Q_PROPERTY(QStringList args READ args NOTIFY dataChanged)
 
 public:
-    explicit AppItem(const QString &appId, const QStringList &categories, QObject *parent = nullptr);
+    explicit AppItem(QObject *parent = nullptr);
+
+    void load(const QString &fileName);
+    bool isValid();
 
     QString name() const;
     QString genericName() const;
     QString comment() const;
     QString iconName() const;
+    QStringList args() const;
     QStringList categories() const { return m_categories; }
 
     QString appId() { return m_appId; }
 
 signals:
     void dataChanged();
+    void loadFinished(AppItem *item);
 
 private:
+    bool m_isValid;
     QString m_name;
     QString m_genericName;
     QString m_comment;
     QString m_iconName;
     QString m_appId;
+    QStringList m_args;
     QStringList m_categories;
     QSettings *m_desktop;
 };

@@ -5,6 +5,8 @@
 #include <QQmlApplicationEngine>
 #include <QQuickView>
 
+#include "applicationmanager.h"
+
 class Launcher : public QGuiApplication
 {
     Q_OBJECT
