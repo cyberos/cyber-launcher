@@ -114,30 +114,29 @@ AppItem *ApplicationManager::findApplication(const QString &appId)
 
 void ApplicationManager::refresh(ApplicationManager *manager)
 {
-    QStringList toRemove;
-    for (AppItem *app : qAsConst(manager->m_apps))
-        toRemove.append(app->appId());
-
     QStringList addedEntries;
-    QDirIterator it("/usr/share/applications", {"*.desktop"}, QDir::NoFilter, QDirIterator::Subdirectories);
+    for (AppItem *app : qAsConst(manager->m_apps))
+        addedEntries.append(app->appId());
+
+    QStringList allEntries;
+    QDirIterator it("/usr/share/applications", { "*.desktop" }, QDir::NoFilter, QDirIterator::Subdirectories);
 
     while (it.hasNext()) {
-        const auto filename = it.next();
-        if (!QFile::exists(filename))
+        const auto fileName = it.next();
+        if (!QFile::exists(fileName))
             continue;
 
-        if (addedEntries.contains(filename))
-            continue;
-        addedEntries.append(filename);
-
-        if (!manager->findApplication(filename))
-            QMetaObject::invokeMethod(manager, "loadApp", Q_ARG(QString, filename));
+        allEntries.append(fileName);
     }
 
-    for (const QString &appId : qAsConst(toRemove)) {
-        AppItem *app = manager->findApplication(appId);
-        if (app)
-            QMetaObject::invokeMethod(manager, "removeApp", Q_ARG(QObject*, qobject_cast<QObject*>(app)));
+    for (const QString &fileName : allEntries) {
+        if (!addedEntries.contains(fileName))
+            QMetaObject::invokeMethod(manager, "loadApp", Q_ARG(QString, fileName));
+    }
+
+    for (AppItem *app : qAsConst(manager->m_apps)) {
+        if (!allEntries.contains(app->appId()))
+            QMetaObject::invokeMethod(manager, "removeApp", Q_ARG(QObject *, qobject_cast<QObject*>(app)));
     }
 
     // Signal the model was refreshed
@@ -205,6 +204,7 @@ void ApplicationManager::addApp(AppItem *item)
     if (item->isValid()) {
         beginInsertRows(QModelIndex(), m_apps.count(), m_apps.count());
         m_apps.append(item);
+        qDebug() << "added: " << item->name();
         Q_EMIT applicationAdded(item);
         endInsertRows();
     } else {
@@ -223,6 +223,7 @@ void ApplicationManager::removeApp(QObject *object)
         return;
 
     beginRemoveRows(QModelIndex(), index, index);
+    qDebug() << "removed: " << app->name();
     m_apps.removeAt(index);
     endRemoveRows();
 

@@ -73,8 +73,6 @@ void AppItem::load(const QString &fileName)
     m_args = appExec.split(" ");
     m_isValid = true;
 
-    qDebug() << appName << appExec.split(" ");
-
     emit loadFinished(this);
 }
 
