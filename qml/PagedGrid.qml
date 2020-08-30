@@ -43,7 +43,7 @@ Item {
         currentIndex: 0
         clip: true
 
-        model: Math.ceil(pagedGrid.count / pageCount)
+        model: Math.max(pagedGrid.count / pageCount, 1)
 
         delegate: Grid {
             id: page
