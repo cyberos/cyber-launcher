@@ -34,6 +34,7 @@ Item {
         id: pageView
 
         anchors.fill: parent
+        focus: NoFocus
 
         orientation: Qt.Horizontal
         snapMode: ListView.SnapOneItem

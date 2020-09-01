@@ -5,9 +5,8 @@ PagedGrid {
     id: gridView
 
     property alias query: appsProxyModel.filterPattern
-    property int cellSize: 130
     property int sideMargins: root.width * 0.1
-    property int itemSize: root.height * 0.17
+    property int itemSize: root.height * 0.18
 
 //    rows: 4
 //    columns: 6

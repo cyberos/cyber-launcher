@@ -45,6 +45,7 @@ ApplicationWindow {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.margins: root.height * 0.05
         placeholderText: qsTr("Search")
+        focus: Qt.StrongFocus
 
         property var calcHeight: root.height * 0.03
         property var minimumHeight: 35
