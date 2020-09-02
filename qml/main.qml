@@ -14,7 +14,7 @@ ApplicationWindow {
     color: "transparent"
     background: Rectangle{
         color: "black"
-        opacity: 0.7
+        opacity: 0.8
     }
 
     MouseArea {
@@ -70,12 +70,21 @@ ApplicationWindow {
     }
 
     PageIndicator {
+        id: pageIndicator
         anchors.top: grid.bottom
         anchors.horizontalCenter: parent.horizontalCenter
-        id: pageIndicator
         count: grid.pages
         currentIndex: grid.currentPage
         onCurrentIndexChanged: grid.currentPage = currentIndex
+        topPadding: root.height * 0.03
+        interactive: true
+
+        delegate: Rectangle {
+            width: 10
+            height: width
+            radius: width / 2
+            color: index === pageIndicator.currentIndex ? "white" : Qt.darker("white")
+        }
     }
 
     function showLauncher() {
