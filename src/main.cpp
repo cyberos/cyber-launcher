@@ -24,7 +24,6 @@
 #include "launcher.h"
 #include "launcheritem.h"
 #include "launchermodel.h"
-#include "qqmlsortfilterproxymodel.h"
 #include "pagemodel.h"
 
 #define DBUS_NAME "org.cyber.Launcher"
@@ -37,7 +36,6 @@ int main(int argc, char *argv[])
 
     QByteArray uri = "org.cyber.launcher";
     qmlRegisterAnonymousType<QAbstractItemModel>(uri, 1);
-    qmlRegisterType<QQmlSortFilterProxyModel>(uri, 1, 0, "SortFilterProxyModel");
     qmlRegisterUncreatableType<LauncherItem>(uri, 1, 0, "LauncherItem", "cannot init application");
     qmlRegisterType<LauncherModel>(uri, 1, 0, "LauncherModel");
     qmlRegisterType<PageModel>(uri, 1, 0, "PageModel");

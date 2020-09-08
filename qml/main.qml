@@ -56,7 +56,7 @@ ApplicationWindow {
         }
 
         onTextChanged: {
-            // grid.query = text
+            launcherModel.search(text)
         }
 
         Keys.onEscapePressed: hideLauncher()

@@ -42,18 +42,15 @@ public:
         CategoriesRole,
         FilterInfoRole,
         PinnedRole,
-        PinnedIndexRole,
-        RunningRole,
-        StartingRole,
-        ActiveRole,
-        HasWindowsRole,
-        HasCountRole,
-        CountRole,
-        HasProgressRole,
-        ProgressRole,
-        ActionsRole
+        PinnedIndexRole
     };
     Q_ENUM(Roles)
+
+    enum Mode {
+        NormalMode,
+        SearchMode
+    };
+    Q_ENUM(Mode)
 
     explicit LauncherModel(QObject *parent = nullptr);
     ~LauncherModel();
@@ -62,6 +59,8 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     QHash<int, QByteArray> roleNames() const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
+
+    Q_INVOKABLE void search(const QString &key);
 
     LauncherItem *findApplication(const QString &appId);
 
@@ -88,7 +87,9 @@ private Q_SLOTS:
     void removeApp(QObject *object);
 
 private:
-    QList<LauncherItem *> m_apps;
+    QList<LauncherItem *> m_items;
+    QList<LauncherItem *> m_searchItems;
+    Mode m_mode;
 };
 
 #endif // LAUNCHERMODEL_H

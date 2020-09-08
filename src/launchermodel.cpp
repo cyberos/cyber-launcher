@@ -42,7 +42,8 @@ static QByteArray detectDesktopEnvironment()
 }
 
 LauncherModel::LauncherModel(QObject *parent)
-    : QAbstractListModel(parent)
+    : QAbstractListModel(parent),
+      m_mode(NormalMode)
 {
     QtConcurrent::run(LauncherModel::refresh, this);
 
@@ -60,8 +61,8 @@ LauncherModel::LauncherModel(QObject *parent)
 
 LauncherModel::~LauncherModel()
 {
-    while (!m_apps.isEmpty())
-        delete m_apps.takeFirst();
+    while (!m_items.isEmpty())
+        delete m_items.takeFirst();
 }
 
 int LauncherModel::count() const
@@ -71,15 +72,17 @@ int LauncherModel::count() const
 
 int LauncherModel::rowCount(const QModelIndex &parent) const
 {
-    Q_UNUSED(parent)
-    return m_apps.size();
+    Q_UNUSED(parent);
+
+    if (m_mode == SearchMode)
+        return m_searchItems.size();
+
+    return m_items.size();
 }
 
 QHash<int, QByteArray> LauncherModel::roleNames() const
 {
     QHash<int, QByteArray> roles;
-    roles.insert(Qt::DisplayRole, "display");
-    roles.insert(Qt::DecorationRole, "decoration");
     roles.insert(AppIdRole, "appId");
     roles.insert(ApplicationRole, "application");
     roles.insert(NameRole, "name");
@@ -90,14 +93,6 @@ QHash<int, QByteArray> LauncherModel::roleNames() const
     roles.insert(FilterInfoRole, "filterInfo");
     roles.insert(PinnedRole, "pinned");
     roles.insert(PinnedIndexRole, "pinnedIndex");
-    roles.insert(RunningRole, "running");
-    roles.insert(StartingRole, "starting");
-    roles.insert(ActiveRole, "active");
-    roles.insert(HasWindowsRole, "hasWindows");
-    roles.insert(HasCountRole, "hasCount");
-    roles.insert(CountRole, "count");
-    roles.insert(HasProgressRole, "hasProgress");
-    roles.insert(ProgressRole, "progress");
     return roles;
 }
 
@@ -106,14 +101,14 @@ QVariant LauncherModel::data(const QModelIndex &index, int role) const
     if (!index.isValid())
         return QVariant();
 
-    LauncherItem *item = m_apps.at(index.row());
+    LauncherItem *item = m_mode == NormalMode
+                       ? m_items.at(index.row())
+                       : m_searchItems.at(index.row());
 
     if (!item)
         return QVariant();
 
     switch (role) {
-    case Qt::DecorationRole:
-        return QIcon::fromTheme(item->iconName);
     case AppIdRole:
         return item->id;
     case NameRole:
@@ -127,9 +122,28 @@ QVariant LauncherModel::data(const QModelIndex &index, int role) const
     }
 }
 
+void LauncherModel::search(const QString &key)
+{
+    m_mode = key.isEmpty() ? NormalMode : SearchMode;
+    m_searchItems.clear();
+
+    for (LauncherItem *item : m_items) {
+        const QString &name = item->name;
+        const QString &fileName = item->id;
+
+        if (name.contains(key, Qt::CaseInsensitive) ||
+            fileName.contains(key, Qt::CaseInsensitive)) {
+            m_searchItems.append(item);
+            continue;
+        }
+    }
+
+    emit layoutChanged();
+}
+
 LauncherItem *LauncherModel::findApplication(const QString &appId)
 {
-    for (LauncherItem *item : qAsConst(m_apps)) {
+    for (LauncherItem *item : qAsConst(m_items)) {
         if (item->id == appId)
             return item;
     }
@@ -140,7 +154,7 @@ LauncherItem *LauncherModel::findApplication(const QString &appId)
 void LauncherModel::refresh(LauncherModel *manager)
 {
     QStringList addedEntries;
-    for (LauncherItem *item : qAsConst(manager->m_apps))
+    for (LauncherItem *item : qAsConst(manager->m_items))
         addedEntries.append(item->id);
 
     QStringList allEntries;
@@ -159,7 +173,7 @@ void LauncherModel::refresh(LauncherModel *manager)
             QMetaObject::invokeMethod(manager, "addApp", Q_ARG(QString, fileName));
     }
 
-    for (LauncherItem *item : qAsConst(manager->m_apps)) {
+    for (LauncherItem *item : qAsConst(manager->m_items)) {
         if (!allEntries.contains(item->id))
             QMetaObject::invokeMethod(manager, "removeApp", Q_ARG(QObject *, qobject_cast<QObject*>(item)));
     }
@@ -170,10 +184,10 @@ void LauncherModel::refresh(LauncherModel *manager)
 
 LauncherItem *LauncherModel::get(int index) const
 {
-    if (index < 0 || index >= m_apps.size())
+    if (index < 0 || index >= m_items.size())
         return nullptr;
 
-    return m_apps.at(index);
+    return m_items.at(index);
 }
 
 QString LauncherModel::getIconName(const QString &appId)
@@ -187,8 +201,8 @@ QString LauncherModel::getIconName(const QString &appId)
 
 int LauncherModel::indexFromAppId(const QString &appId) const
 {
-    for (int i = 0; i < m_apps.size(); i++) {
-        if (m_apps.at(i)->id == appId)
+    for (int i = 0; i < m_items.size(); i++) {
+        if (m_items.at(i)->id == appId)
             return i;
     }
 
@@ -252,8 +266,8 @@ void LauncherModel::addApp(const QString &fileName)
     item->iconName = desktop.value("Icon").toString();
     item->args = appExec.split(" ");
 
-    beginInsertRows(QModelIndex(), m_apps.count(), m_apps.count());
-    m_apps.append(item);
+    beginInsertRows(QModelIndex(), m_items.count(), m_items.count());
+    m_items.append(item);
     qDebug() << "added: " << item->name;
     Q_EMIT applicationAdded(item);
     endInsertRows();
@@ -265,13 +279,13 @@ void LauncherModel::removeApp(QObject *object)
     if (!item)
         return;
 
-    int index = m_apps.indexOf(item);
+    int index = m_items.indexOf(item);
     if (index < 0)
         return;
 
     beginRemoveRows(QModelIndex(), index, index);
     qDebug() << "removed: " << item->name;
-    m_apps.removeAt(index);
+    m_items.removeAt(index);
     endRemoveRows();
 
     Q_EMIT applicationRemoved(item);

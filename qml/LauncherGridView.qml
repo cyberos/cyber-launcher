@@ -16,17 +16,6 @@ PagedGrid {
 
     model: launcherModel
 
-//    model: SortFilterProxyModel {
-//        id: appsProxyModel
-//        sourceModel: launcherModel
-//        filterRoleName: "filterInfo"
-//        filterCaseSensitivity: Qt.CaseInsensitive
-//        isSortLocaleAware: true
-//        sortCaseSensitivity: Qt.CaseSensitive
-//        sortOrder: Qt.AscendingOrder
-//        sortRoleName: "name"
-//    }
-
     delegate: Item {
         width: gridView.itemSize
         height: width

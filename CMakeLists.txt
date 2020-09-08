@@ -21,7 +21,6 @@ set(SRCS
     src/launcheritem.cpp
     src/main.cpp
     src/pagemodel.cpp
-    src/qqmlsortfilterproxymodel.cpp
     src/ucunits.cpp
 )
 
