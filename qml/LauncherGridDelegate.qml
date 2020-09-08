@@ -70,7 +70,7 @@ Rectangle {
         anchors.fill: parent
 
         onClicked: {
-            applicationManager.launch(model.appId)
+            launcherModel.launch(model.appId)
         }
     }
 

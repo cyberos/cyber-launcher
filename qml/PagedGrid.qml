@@ -34,7 +34,6 @@ Item {
         id: pageView
 
         anchors.fill: parent
-        focus: NoFocus
 
         orientation: Qt.Horizontal
         snapMode: ListView.SnapOneItem
@@ -48,13 +47,11 @@ Item {
 
         delegate: Grid {
             id: page
-
-            readonly property int pageIndex: index
-
             width: pagedGrid.width
             height: pagedGrid.height
-
             columns: pagedGrid.columns
+
+            readonly property int pageIndex: index
 
             Repeater {
                 model: PageModel {

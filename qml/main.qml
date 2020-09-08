@@ -25,12 +25,12 @@ ApplicationWindow {
         }
     }
 
-    ApplicationManager {
-        id: applicationManager
+    LauncherModel {
+        id: launcherModel
     }
 
     Connections {
-        target: applicationManager
+        target: launcherModel
 
         function onApplicationLaunched() {
             hideLauncher()
@@ -56,7 +56,7 @@ ApplicationWindow {
         }
 
         onTextChanged: {
-            grid.query = text
+            // grid.query = text
         }
 
         Keys.onEscapePressed: hideLauncher()

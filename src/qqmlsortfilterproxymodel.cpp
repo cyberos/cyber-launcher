@@ -40,7 +40,7 @@ QQmlSortFilterProxyModel::QQmlSortFilterProxyModel(QObject *parent)
     connect(this, &QAbstractItemModel::modelReset, this, &QQmlSortFilterProxyModel::countChanged);
     connect(this, &QAbstractItemModel::layoutChanged, this,
             &QQmlSortFilterProxyModel::countChanged);
-    setDynamicSortFilter(true);
+    setDynamicSortFilter(false);
 }
 
 int QQmlSortFilterProxyModel::count() const

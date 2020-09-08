@@ -17,17 +17,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef APPLICATIONMANAGER_H
-#define APPLICATIONMANAGER_H
+#ifndef LAUNCHERMODEL_H
+#define LAUNCHERMODEL_H
 
 #include <QObject>
 #include <QLoggingCategory>
 #include <QAbstractListModel>
 
-class AppItem;
-class ApplicationManager : public QAbstractListModel
+class LauncherItem;
+class LauncherModel : public QAbstractListModel
 {
     Q_OBJECT
+    Q_PROPERTY(int count READ count NOTIFY countChanged)
 
 public:
     enum Roles
@@ -54,18 +55,19 @@ public:
     };
     Q_ENUM(Roles)
 
-    explicit ApplicationManager(QObject *parent = nullptr);
-    ~ApplicationManager();
+    explicit LauncherModel(QObject *parent = nullptr);
+    ~LauncherModel();
 
+    int count() const;
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
     QHash<int, QByteArray> roleNames() const override;
     QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
-    AppItem *findApplication(const QString &appId);
+    LauncherItem *findApplication(const QString &appId);
 
-    static void refresh(ApplicationManager *manager);
+    static void refresh(LauncherModel *manager);
 
-    Q_INVOKABLE AppItem *get(int index) const;
+    Q_INVOKABLE LauncherItem *get(int index) const;
 
     Q_INVOKABLE QString getIconName(const QString &appId);
     Q_INVOKABLE int indexFromAppId(const QString &appId) const;
@@ -75,18 +77,18 @@ public Q_SLOTS:
     Q_INVOKABLE bool launch() { return launch(QString()); }
 
 Q_SIGNALS:
+    void countChanged();
     void refreshed();
-    void applicationAdded(AppItem *app);
-    void applicationRemoved(AppItem *app);
+    void applicationAdded(LauncherItem *app);
+    void applicationRemoved(LauncherItem *app);
     void applicationLaunched();
 
 private Q_SLOTS:
-    void loadApp(const QString &fileName);
-    void addApp(AppItem *item);
+    void addApp(const QString &fileName);
     void removeApp(QObject *object);
 
 private:
-    QList<AppItem *> m_apps;
+    QList<LauncherItem *> m_apps;
 };
 
-#endif // APPLICATIONMANAGER_H
+#endif // LAUNCHERMODEL_H

@@ -4,7 +4,7 @@ import org.cyber.launcher 1.0
 PagedGrid {
     id: gridView
 
-    property alias query: appsProxyModel.filterPattern
+    // property alias query: appsProxyModel.filterPattern
     property int sideMargin: root.width * 0.1
     property int itemSize: root.height * 0.18
 
@@ -14,16 +14,18 @@ PagedGrid {
     width: columns * itemSize
     height: rows * itemSize
 
-    model: SortFilterProxyModel {
-        id: appsProxyModel
-        sourceModel: applicationManager
-        filterRoleName: "filterInfo"
-        filterCaseSensitivity: Qt.CaseInsensitive
-        isSortLocaleAware: true
-        sortCaseSensitivity: Qt.CaseSensitive
-        sortOrder: Qt.AscendingOrder
-        sortRoleName: "name"
-    }
+    model: launcherModel
+
+//    model: SortFilterProxyModel {
+//        id: appsProxyModel
+//        sourceModel: launcherModel
+//        filterRoleName: "filterInfo"
+//        filterCaseSensitivity: Qt.CaseInsensitive
+//        isSortLocaleAware: true
+//        sortCaseSensitivity: Qt.CaseSensitive
+//        sortOrder: Qt.AscendingOrder
+//        sortRoleName: "name"
+//    }
 
     delegate: Item {
         width: gridView.itemSize
