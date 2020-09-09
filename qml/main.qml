@@ -17,6 +17,11 @@ ApplicationWindow {
         opacity: 0.8
     }
 
+    onActiveChanged: {
+        if (!active)
+            hideLauncher()
+    }
+
     MouseArea {
         anchors.fill: parent
 
