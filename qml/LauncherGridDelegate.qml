@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick 2.9
 import QtQuick.Controls 2.1
 import QtQuick.Controls.Material 2.1
 
@@ -60,8 +60,12 @@ Rectangle {
             anchors.fill: icon
             hoverEnabled: true
 
-            onContainsMouseChanged: {
-                icon.state = containsMouse ? "mouseIn" : "mouseOut"
+            onEntered: {
+                icon.state = "mouseIn"
+            }
+
+            onExited: {
+                icon.state = "mouseOut"
             }
         }
     }
@@ -72,6 +76,12 @@ Rectangle {
         onClicked: {
             launcherModel.launch(model.appId)
         }
+    }
+
+    TextMetrics {
+        id: fontMetrics
+        font.family: label.font.family
+        text: label.text
     }
 
     Label {
@@ -86,8 +96,10 @@ Rectangle {
         text: model.name
         elide: Text.ElideRight
         textFormat: Text.PlainText
+        wrapMode: "WordWrap"
         horizontalAlignment: Text.AlignHCenter
         width: parent.width - 2 * 10
+        height: fontMetrics.height
         color: "white"
     }
 }
