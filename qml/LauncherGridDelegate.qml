@@ -1,5 +1,6 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.1
+import QtGraphicalEffects 1.0
 import QtQuick.Controls.Material 2.1
 
 Rectangle {
@@ -23,59 +24,20 @@ Rectangle {
         width: height
         height: width
 
-        states: ["mouseIn", "mouseOut"]
-        state: "mouseOut"
-
-        transitions: [
-            Transition {
-                from: "*"
-                to: "mouseIn"
-
-                NumberAnimation {
-                    target: icon
-                    properties: "scale"
-                    from: 1
-                    to: 1.2
-                    duration: 150
-                    easing.type: Easing.OutCubic
-                }
-            },
-            Transition {
-                from: "*"
-                to: "mouseOut"
-
-                NumberAnimation {
-                    target: icon
-                    properties: "scale"
-                    from: 1.2
-                    to: 1
-                    duration: 100
-                    easing.type: Easing.InCubic
-                }
-            }
-        ]
-
-        MouseArea {
-            id: iconArea
+        ColorOverlay {
+            id: colorOverlay
             anchors.fill: icon
-            hoverEnabled: true
-
-            onEntered: {
-                icon.state = "mouseIn"
-            }
-
-            onExited: {
-                icon.state = "mouseOut"
-            }
+            source: icon
+            color: "#000000"
+            opacity: 0.5
+            visible: iconMouseArea.pressed
         }
     }
 
     MouseArea {
+        id: iconMouseArea
         anchors.fill: parent
-
-        onClicked: {
-            launcherModel.launch(model.appId)
-        }
+        onClicked: launcherModel.launch(model.appId)
     }
 
     TextMetrics {

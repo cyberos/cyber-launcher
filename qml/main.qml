@@ -5,16 +5,27 @@ import QtQuick.Layouts 1.3
 import org.cyber.launcher 1.0
 
 ApplicationWindow {
+    id: root
     visible: false
+
+//    width: Screen.desktopAvailableWidth - (Screen.desktopAvailableHeight * 0.1)
+//    height: Screen.desktopAvailableHeight - (Screen.desktopAvailableHeight * 0.1)
+//    x: (Screen.desktopAvailableWidth - root.width) / 2
+//    y: (Screen.desktopAvailableHeight - root.height) / 2
+
+//    width: Screen.desktopAvailableWidth
+//    height: Screen.desktopAvailableHeight
+
     width: Screen.width
     height: Screen.height
-    flags: Qt.BypassWindowManagerHint | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
-    id: root
+
+    flags: Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint | Qt.X11BypassWindowManagerHint
 
     color: "transparent"
     background: Rectangle{
         color: "black"
-        opacity: 0.8
+        opacity: 0.9
+        // radius: root.height * 0.05
     }
 
     onActiveChanged: {
