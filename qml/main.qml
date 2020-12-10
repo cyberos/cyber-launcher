@@ -3,6 +3,7 @@ import QtQuick.Window 2.3
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
 import org.cyber.launcher 1.0
+import MeuiKit 1.0 as Meui
 
 ApplicationWindow {
     id: root
@@ -69,6 +70,7 @@ ApplicationWindow {
         background: Rectangle {
             opacity: 0.8
             radius: textField.height * 0.2
+            color: Meui.Theme.backgroundColor
         }
 
         onTextChanged: {
