@@ -25,6 +25,7 @@
 #include "launcheritem.h"
 #include "launchermodel.h"
 #include "pagemodel.h"
+#include "wallpaper.h"
 
 #define DBUS_NAME "org.cyber.Launcher"
 #define DBUS_PATH "/Launcher"
@@ -39,6 +40,7 @@ int main(int argc, char *argv[])
     qmlRegisterUncreatableType<LauncherItem>(uri, 1, 0, "LauncherItem", "cannot init application");
     qmlRegisterType<LauncherModel>(uri, 1, 0, "LauncherModel");
     qmlRegisterType<PageModel>(uri, 1, 0, "PageModel");
+    qmlRegisterType<Wallpaper>(uri, 1, 0, "Wallpaper");
 
     Launcher app(argc, argv);
     app.setApplicationName(QStringLiteral("cyber-launcher"));

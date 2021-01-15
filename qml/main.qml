@@ -2,6 +2,7 @@ import QtQuick 2.9
 import QtQuick.Window 2.3
 import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.3
+import QtGraphicalEffects 1.12
 import org.cyber.launcher 1.0
 import MeuiKit 1.0 as Meui
 
@@ -23,10 +24,35 @@ ApplicationWindow {
     flags: Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint | Qt.X11BypassWindowManagerHint
 
     color: "transparent"
-    background: Rectangle{
-        color: "black"
-        opacity: 0.9
-        // radius: root.height * 0.05
+
+    Wallpaper {
+        id: backend
+    }
+
+    background: Image {
+        id: wallpaper
+        anchors.fill: parent
+        source: "file://" + backend.wallpaper
+        sourceSize: Qt.size(width, height)
+        fillMode: Image.PreserveAspectCrop
+        clip: true
+        cache: false
+
+        FastBlur {
+            id: wallpaperBlur
+            anchors.fill: wallpaper
+            source: wallpaper
+            radius: 64
+            cached: true
+
+            ColorOverlay {
+                anchors.fill: wallpaperBlur
+                source: wallpaperBlur
+                color: "#000000"
+                opacity: 0.4
+                visible: true
+            }
+        }
     }
 
     onActiveChanged: {
