@@ -17,8 +17,6 @@ public:
     QString wallpaper() const;
     bool dimsWallpaper() const;
 
-    Q_INVOKABLE void launch(const QString &command, const QStringList &args);
-
 signals:
     void wallpaperChanged();
     void dimsWallpaperChanged();

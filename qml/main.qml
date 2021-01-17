@@ -10,20 +10,10 @@ ApplicationWindow {
     id: root
     visible: false
 
-//    width: Screen.desktopAvailableWidth - (Screen.desktopAvailableHeight * 0.1)
-//    height: Screen.desktopAvailableHeight - (Screen.desktopAvailableHeight * 0.1)
-//    x: (Screen.desktopAvailableWidth - root.width) / 2
-//    y: (Screen.desktopAvailableHeight - root.height) / 2
-
-//    width: Screen.desktopAvailableWidth
-//    height: Screen.desktopAvailableHeight
-
     width: Screen.width
     height: Screen.height
 
     flags: Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint | Qt.X11BypassWindowManagerHint
-
-    color: "transparent"
 
     Wallpaper {
         id: backend
@@ -37,22 +27,21 @@ ApplicationWindow {
         fillMode: Image.PreserveAspectCrop
         clip: true
         cache: false
+    }
 
-        FastBlur {
-            id: wallpaperBlur
-            anchors.fill: wallpaper
-            source: wallpaper
-            radius: 64
-            cached: true
+    FastBlur {
+        id: wallpaperBlur
+        anchors.fill: parent
+        source: wallpaper
+        radius: 64
+    }
 
-            ColorOverlay {
-                anchors.fill: wallpaperBlur
-                source: wallpaperBlur
-                color: "#000000"
-                opacity: 0.4
-                visible: true
-            }
-        }
+    ColorOverlay {
+        anchors.fill: parent
+        source: wallpaperBlur
+        color: "#000000"
+        opacity: 0.6
+        visible: true
     }
 
     onActiveChanged: {

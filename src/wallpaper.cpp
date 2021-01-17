@@ -25,14 +25,6 @@ bool Wallpaper::dimsWallpaper() const
     return m_interface.property("darkModeDimsWallpaer").toBool();
 }
 
-void Wallpaper::launch(const QString &command, const QStringList &args)
-{
-    QProcess process;
-    process.setProgram(command);
-    process.setArguments(args);
-    process.startDetached();
-}
-
 void Wallpaper::onWallpaperChanged(QString path)
 {
     if (path != m_wallpaper) {
