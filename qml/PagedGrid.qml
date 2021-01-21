@@ -39,7 +39,7 @@ Item {
         snapMode: ListView.SnapOneItem
         highlightFollowsCurrentItem: true
         highlightRangeMode: ListView.StrictlyEnforceRange
-        highlightMoveDuration: 500
+        highlightMoveDuration: 350
         currentIndex: 0
         clip: true
 

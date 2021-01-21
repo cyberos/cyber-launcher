@@ -127,7 +127,7 @@ void LauncherModel::search(const QString &key)
     m_mode = key.isEmpty() ? NormalMode : SearchMode;
     m_searchItems.clear();
 
-    for (LauncherItem *item : m_items) {
+    for (LauncherItem *item : qAsConst(m_items)) {
         const QString &name = item->name;
         const QString &fileName = item->id;
 
@@ -175,7 +175,7 @@ void LauncherModel::refresh(LauncherModel *manager)
 
     for (LauncherItem *item : qAsConst(manager->m_items)) {
         if (!allEntries.contains(item->id))
-            QMetaObject::invokeMethod(manager, "removeApp", Q_ARG(QObject *, qobject_cast<QObject*>(item)));
+            QMetaObject::invokeMethod(manager, "removeApp", Q_ARG(QObject*, qobject_cast<QObject*>(item)));
     }
 
     // Signal the model was refreshed

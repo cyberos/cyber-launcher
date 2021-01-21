@@ -1,7 +1,7 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.1
 import QtGraphicalEffects 1.0
-import QtQuick.Controls.Material 2.1
+import MeuiKit 1.0 as Meui
 
 Rectangle {
     color: "transparent"
@@ -34,10 +34,28 @@ Rectangle {
         }
     }
 
+    Menu {
+        id: _itemMenu
+
+        modal: true
+
+        MenuItem {
+            text: qsTr("Open")
+            onTriggered: launcherModel.launch(model.appId)
+        }
+    }
+
     MouseArea {
         id: iconMouseArea
-        anchors.fill: parent
-        onClicked: launcherModel.launch(model.appId)
+        anchors.fill: icon
+        acceptedButtons: Qt.LeftButton | Qt.RightButton
+
+        onClicked: {
+            if (mouse.button == Qt.LeftButton)
+                launcherModel.launch(model.appId)
+            else if (mouse.button == Qt.RightButton)
+                _itemMenu.popup()
+        }
     }
 
     TextMetrics {

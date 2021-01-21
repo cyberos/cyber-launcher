@@ -83,7 +83,7 @@ ApplicationWindow {
         property var minimumHeight: 35
 
         background: Rectangle {
-            opacity: 0.8
+            opacity: 0.6
             radius: textField.height * 0.2
             color: Meui.Theme.backgroundColor
         }
@@ -111,6 +111,7 @@ ApplicationWindow {
         onCurrentIndexChanged: grid.currentPage = currentIndex
         topPadding: root.height * 0.03
         interactive: true
+        spacing: Meui.Units.largeSpacing
 
         delegate: Rectangle {
             width: 10
