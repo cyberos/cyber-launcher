@@ -10,8 +10,9 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(QT Core DBus Quick QuickControls2)
+set(QT Core Widgets DBus Quick QuickControls2)
 find_package(Qt5 REQUIRED ${QT})
+find_package(KF5WindowSystem REQUIRED)
 
 set(SRCS
     src/desktopproperties.cpp
@@ -41,9 +42,11 @@ set_source_files_properties(${DBUS_SRCS} PROPERTIES SKIP_AUTOGEN ON)
 add_executable(${PROJECT_NAME} ${SRCS} ${DBUS_SRCS} ${RESOURCES})
 target_link_libraries(${PROJECT_NAME}
         Qt5::Core
+        Qt5::Widgets
         Qt5::DBus
         Qt5::Quick
         Qt5::QuickControls2
+        KF5::WindowSystem
 )
 
 install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION /usr/bin)

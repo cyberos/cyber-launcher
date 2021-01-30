@@ -22,31 +22,62 @@
 #include "iconthemeimageprovider.h"
 
 #include <QDBusConnection>
-
-#include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <QScreen>
 
-Launcher::Launcher(int &argc, char **argv)
-  : QGuiApplication(argc, argv),
-    m_engine(new QQmlApplicationEngine(this))
+#include <NETWM>
+#include <KWindowSystem>
+
+Launcher::Launcher(QQuickView *w)
+  : QQuickView(w)
 {
     new LauncherAdaptor(this);
 
-    m_engine->addImageProvider("icontheme", new IconThemeImageProvider);
-    m_engine->load(QUrl(QLatin1String("qrc:/qml/main.qml")));
+    engine()->rootContext()->setContextProperty("launcher", this);
+
+    setFlags(Qt::FramelessWindowHint);
+    setResizeMode(QQuickView::SizeRootObjectToView);
+    setClearBeforeRendering(true);
+    setScreen(qApp->primaryScreen());
+    setSource(QUrl(QStringLiteral("qrc:/qml/main.qml")));
+    setVisible(false);
+    resizeWindow();
+
+    connect(qApp->primaryScreen(), &QScreen::virtualGeometryChanged, this, &Launcher::resizeWindow, Qt::QueuedConnection);
+    connect(qApp->primaryScreen(), &QScreen::geometryChanged, this, &Launcher::resizeWindow, Qt::QueuedConnection);
+    connect(this, &QQuickView::activeChanged, this, &Launcher::onActiveChanged);
 }
 
 void Launcher::show()
 {
-    QMetaObject::invokeMethod(m_engine->rootObjects().first(), "show");
+    setVisible(true);
 }
 
 void Launcher::hide()
 {
-    QMetaObject::invokeMethod(m_engine->rootObjects().first(), "hide");
+    setVisible(false);
 }
 
 void Launcher::toggle()
 {
-    QMetaObject::invokeMethod(m_engine->rootObjects().first(), "toggle");
+    isVisible() ? hide() : show();
+}
+
+void Launcher::showEvent(QShowEvent *e)
+{
+    KWindowSystem::setState(winId(), NET::SkipTaskbar | NET::SkipPager);
+
+    QQuickView::showEvent(e);
+}
+
+void Launcher::resizeWindow()
+{
+    QRect geometry = qApp->primaryScreen()->geometry();
+    setGeometry(geometry);
+}
+
+void Launcher::onActiveChanged()
+{
+    if (!isActive())
+        Launcher::hide();
 }

@@ -6,20 +6,14 @@ import QtGraphicalEffects 1.12
 import org.cyber.launcher 1.0
 import MeuiKit 1.0 as Meui
 
-ApplicationWindow {
+Item {
     id: root
-    visible: false
-
-    width: Screen.width
-    height: Screen.height
-
-    flags: Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint | Qt.X11BypassWindowManagerHint
 
     Wallpaper {
         id: backend
     }
 
-    background: Image {
+    Image {
         id: wallpaper
         anchors.fill: parent
         source: "file://" + backend.wallpaper
@@ -42,11 +36,6 @@ ApplicationWindow {
         color: "#000000"
         opacity: 0.6
         visible: true
-    }
-
-    onActiveChanged: {
-        if (!active)
-            hideLauncher()
     }
 
     MouseArea {
@@ -122,19 +111,11 @@ ApplicationWindow {
     }
 
     function showLauncher() {
-        root.visible = true;
-        root.visibility = Window.FullScreen
+        launcher.show()
     }
 
     function hideLauncher() {
         textField.text = ""
-        root.visible = false;
-    }
-
-    function toggle() {
-        if (root.visible)
-            hideLauncher()
-        else
-            showLauncher()
+        launcher.hide()
     }
 }

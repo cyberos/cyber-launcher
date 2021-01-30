@@ -21,22 +21,25 @@
 #define LAUNCHER_H
 
 #include <QGuiApplication>
-#include <QQmlApplicationEngine>
 #include <QQuickView>
 
-class Launcher : public QGuiApplication
+class Launcher : public QQuickView
 {
     Q_OBJECT
 
 public:
-    Launcher(int &argc, char **argv);
+    Launcher(QQuickView *w = nullptr);
 
     void show();
     void hide();
     void toggle();
 
+protected:
+    void showEvent(QShowEvent *e) override;
+
 private:
-    QQmlApplicationEngine *m_engine;
+    void resizeWindow();
+    void onActiveChanged();
 };
 
 #endif // LAUNCHER_H

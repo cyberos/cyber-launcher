@@ -5,7 +5,7 @@ CyberOS's full-screen application launcher.
 ## Dependencies
 
 ```shell
-sudo pacman -S gcc cmake qt5-base qt5-quickcontrols2
+sudo pacman -S gcc cmake qt5-base qt5-quickcontrols2 kwindowsystem
 ```
 
 ## Build and Install

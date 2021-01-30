@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QGuiApplication>
+#include <QApplication>
 #include <QDBusConnection>
 #include <QDBusInterface>
 
@@ -26,6 +26,8 @@
 #include "launchermodel.h"
 #include "pagemodel.h"
 #include "wallpaper.h"
+
+#include <QDebug>
 
 #define DBUS_NAME "org.cyber.Launcher"
 #define DBUS_PATH "/Launcher"
@@ -42,7 +44,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<PageModel>(uri, 1, 0, "PageModel");
     qmlRegisterType<Wallpaper>(uri, 1, 0, "Wallpaper");
 
-    Launcher app(argc, argv);
+    QApplication app(argc, argv);
     app.setApplicationName(QStringLiteral("cyber-launcher"));
 
     // QCommandLineParser parser;
@@ -56,12 +58,14 @@ int main(int argc, char *argv[])
 
     QDBusConnection dbus = QDBusConnection::sessionBus();
     if (!dbus.registerService(DBUS_NAME)) {
-        QDBusInterface iface(DBUS_NAME, DBUS_PATH, DBUS_INTERFACE, dbus, &app);
+        QDBusInterface iface(DBUS_NAME, DBUS_PATH, DBUS_INTERFACE, dbus);
         iface.call("toggle");
         return -1;
     }
 
-    if (!dbus.registerObject(DBUS_PATH, DBUS_INTERFACE, &app))
+    Launcher launcher;
+
+    if (!dbus.registerObject(DBUS_PATH, DBUS_INTERFACE, &launcher))
         return -1;
 
     return app.exec();
