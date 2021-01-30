@@ -4,21 +4,17 @@ import org.cyber.launcher 1.0
 PagedGrid {
     id: gridView
 
-    // property alias query: appsProxyModel.filterPattern
-    property int sideMargin: root.width * 0.1
-    property int itemSize: root.height * 0.18
+    property int cellHeight: gridView.height * 0.21
+    property int cellWidth: gridView.height * 0.21
 
-    columns: Math.ceil((root.width - sideMargin * 2) / itemSize)
-    rows: (root.height - textField.height * 4) / itemSize
-
-    width: columns * itemSize
-    height: rows * itemSize
+    columns: gridView.width / cellWidth
+    rows: gridView.height / cellHeight
 
     model: launcherModel
 
     delegate: Item {
-        width: gridView.itemSize
-        height: width
+        width: cellWidth
+        height: cellHeight
 
         LauncherGridDelegate {
             id: delegate
@@ -28,5 +24,34 @@ PagedGrid {
                 margins: 10
             }
         }
+    }
+
+    onWidthChanged: {
+        gridView.adaptGrid()
+    }
+
+    onHeightChanged: {
+        gridView.adaptGrid()
+    }
+
+    function calcExtraSpacing(cellSize, containerSize) {
+        var availableColumns = Math.floor(containerSize / cellSize);
+        var extraSpacing = 0;
+        if (availableColumns > 0) {
+            var allColumnSize = availableColumns * cellSize;
+            var extraSpace = Math.max(containerSize - allColumnSize, 0);
+            extraSpacing = extraSpace / availableColumns;
+        }
+        return Math.floor(extraSpacing);
+    }
+
+    function adaptGrid() {
+        var fullWidth = gridView.width
+        var fullHeight = gridView.height
+
+        var cellSize = gridView.height * 0.21
+
+        gridView.cellWidth = cellSize + calcExtraSpacing(cellSize, fullWidth)
+        gridView.cellHeight = cellSize + calcExtraSpacing(cellSize, fullHeight)
     }
 }

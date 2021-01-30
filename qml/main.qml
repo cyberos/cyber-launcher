@@ -38,14 +38,6 @@ Item {
         visible: true
     }
 
-    MouseArea {
-        anchors.fill: parent
-
-        onClicked: {
-            hideLauncher()
-        }
-    }
-
     LauncherModel {
         id: launcherModel
     }
@@ -58,55 +50,82 @@ Item {
         }
     }
 
-    TextField {
-        id: textField
-        height: minimumHeight < calcHeight ? calcHeight : minimumHeight
-        width: root.width * 0.2
-        anchors.top: parent.top
-        anchors.horizontalCenter: parent.horizontalCenter
-        anchors.margins: root.height * 0.05
-        placeholderText: qsTr("Search")
-        focus: Qt.StrongFocus
+    ColumnLayout {
+        id: mainLayout
+        anchors.fill: parent
+        anchors.topMargin: root.height * 0.05
+        anchors.bottomMargin: root.height * 0.1
+        spacing: Meui.Units.largeSpacing * 2
 
-        property var calcHeight: root.height * 0.03
-        property var minimumHeight: 35
+        Item {
+            id: searchItem
+            Layout.fillWidth: true
+            height: 40
 
-        background: Rectangle {
-            opacity: 0.6
-            radius: textField.height * 0.2
-            color: Meui.Theme.backgroundColor
+            TextField {
+                id: textField
+                anchors.centerIn: parent
+                width: searchItem.width * 0.2
+                height: parent.height
+
+                placeholderText: qsTr("Search")
+                focus: Qt.StrongFocus
+
+                background: Rectangle {
+                    opacity: 0.6
+                    radius: textField.height * 0.2
+                    color: Meui.Theme.backgroundColor
+                    border.width: 1
+                    border.color: Qt.rgba(255, 255, 255, 0.1)
+                }
+
+                onTextChanged: {
+                    launcherModel.search(text)
+                }
+
+                Keys.onEscapePressed: hideLauncher()
+            }
         }
 
-        onTextChanged: {
-            launcherModel.search(text)
+        Item {
+            id: gridItem
+            Layout.fillHeight: true
+            Layout.fillWidth: true
+
+            LauncherGridView {
+                id: grid
+                anchors.fill: parent
+                anchors.leftMargin: gridItem.width * 0.05
+                anchors.rightMargin: gridItem.width * 0.05
+                Layout.alignment: Qt.AlignHCenter
+            }
         }
 
-        Keys.onEscapePressed: hideLauncher()
+        PageIndicator {
+            id: pageIndicator
+            count: grid.pages
+            currentIndex: grid.currentPage
+            onCurrentIndexChanged: grid.currentPage = currentIndex
+            // topPadding: root.height * 0.03
+            interactive: true
+            spacing: Meui.Units.largeSpacing
+            Layout.alignment: Qt.AlignHCenter
+
+            delegate: Rectangle {
+                width: 10
+                height: width
+                radius: width / 2
+                color: index === pageIndicator.currentIndex ? "white" : Qt.darker("white")
+            }
+        }
     }
 
-    LauncherGridView {
-        anchors.top: textField.bottom
-        anchors.centerIn: parent
-        // anchors.horizontalCenter: parent.horizontalCenter
-        id: grid
-    }
+    MouseArea {
+        anchors.fill: parent
+        z: -1
 
-    PageIndicator {
-        id: pageIndicator
-        anchors.top: grid.bottom
-        anchors.horizontalCenter: parent.horizontalCenter
-        count: grid.pages
-        currentIndex: grid.currentPage
-        onCurrentIndexChanged: grid.currentPage = currentIndex
-        topPadding: root.height * 0.03
-        interactive: true
-        spacing: Meui.Units.largeSpacing
-
-        delegate: Rectangle {
-            width: 10
-            height: width
-            radius: width / 2
-            color: index === pageIndicator.currentIndex ? "white" : Qt.darker("white")
+        onClicked: {
+            hideLauncher()
         }
     }
 

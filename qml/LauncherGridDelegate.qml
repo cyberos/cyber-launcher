@@ -81,5 +81,12 @@ Rectangle {
         width: parent.width - 2 * 10
         height: fontMetrics.height
         color: "white"
+
+        layer.enabled: true
+        layer.effect: Glow {
+            color: "#80000000"
+            samples: 15
+            spread: 0.3
+        }
     }
 }

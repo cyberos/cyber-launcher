@@ -25,7 +25,6 @@
 #include <QQmlContext>
 #include <QScreen>
 
-#include <NETWM>
 #include <KWindowSystem>
 
 Launcher::Launcher(QQuickView *w)
@@ -39,9 +38,11 @@ Launcher::Launcher(QQuickView *w)
     setResizeMode(QQuickView::SizeRootObjectToView);
     setClearBeforeRendering(true);
     setScreen(qApp->primaryScreen());
-    setSource(QUrl(QStringLiteral("qrc:/qml/main.qml")));
-    setVisible(false);
     resizeWindow();
+
+    setSource(QUrl(QStringLiteral("qrc:/qml/main.qml")));
+    setTitle(tr("Launcher"));
+    setVisible(false);
 
     connect(qApp->primaryScreen(), &QScreen::virtualGeometryChanged, this, &Launcher::resizeWindow, Qt::QueuedConnection);
     connect(qApp->primaryScreen(), &QScreen::geometryChanged, this, &Launcher::resizeWindow, Qt::QueuedConnection);
