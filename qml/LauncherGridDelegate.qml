@@ -3,9 +3,12 @@ import QtQuick.Controls 2.1
 import QtGraphicalEffects 1.0
 import MeuiKit 1.0 as Meui
 
-Rectangle {
-    color: "transparent"
-    antialiasing: true
+Item {
+    Drag.active: iconMouseArea.drag.active
+    Drag.dragType: Drag.Automatic
+    Drag.supportedActions: Qt.MoveAction
+    Drag.hotSpot.x: icon.width / 2
+    Drag.hotSpot.y: icon.height / 2
 
     Image {
         id: icon
@@ -49,6 +52,7 @@ Rectangle {
         id: iconMouseArea
         anchors.fill: icon
         acceptedButtons: Qt.LeftButton | Qt.RightButton
+        drag.axis: Drag.XAndYAxis
 
         onClicked: {
             if (mouse.button == Qt.LeftButton)

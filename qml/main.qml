@@ -53,7 +53,7 @@ Item {
     ColumnLayout {
         id: mainLayout
         anchors.fill: parent
-        anchors.topMargin: root.height * 0.05
+        anchors.topMargin: Meui.Units.largeSpacing * 4
         anchors.bottomMargin: root.height * 0.1
         spacing: Meui.Units.largeSpacing * 2
 
@@ -106,7 +106,6 @@ Item {
             count: grid.pages
             currentIndex: grid.currentPage
             onCurrentIndexChanged: grid.currentPage = currentIndex
-            // topPadding: root.height * 0.03
             interactive: true
             spacing: Meui.Units.largeSpacing
             Layout.alignment: Qt.AlignHCenter
