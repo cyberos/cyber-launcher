@@ -4,8 +4,8 @@ import org.cyber.launcher 1.0
 PagedGrid {
     id: gridView
 
-    property int cellHeight: gridView.height * 0.21
-    property int cellWidth: gridView.height * 0.21
+    property int cellHeight: 144
+    property int cellWidth: 144
 
     columns: gridView.width / cellWidth
     rows: gridView.height / cellHeight
@@ -49,7 +49,7 @@ PagedGrid {
         var fullWidth = gridView.width
         var fullHeight = gridView.height
 
-        var cellSize = gridView.height * 0.21
+        var cellSize = 144
 
         gridView.cellWidth = cellSize + calcExtraSpacing(cellSize, fullWidth)
         gridView.cellHeight = cellSize + calcExtraSpacing(cellSize, fullHeight)
