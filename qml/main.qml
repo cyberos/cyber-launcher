@@ -9,6 +9,9 @@ import MeuiKit 1.0 as Meui
 Item {
     id: root
 
+    property var desktopAvailableHeight: Screen.desktopAvailableHeight
+    property var desktopAvailableWidth: Screen.desktopAvailableWidth
+
     Wallpaper {
         id: backend
     }
@@ -53,8 +56,15 @@ Item {
     ColumnLayout {
         id: mainLayout
         anchors.fill: parent
-        anchors.topMargin: Meui.Units.largeSpacing * 4
-        anchors.bottomMargin: root.height * 0.1
+        anchors.topMargin: root.height === root.desktopAvailableHeight ? Meui.Units.largeSpacing * 2
+                                                                       : (root.height - root.desktopAvailableHeight) / 2
+        anchors.bottomMargin: root.height === root.desktopAvailableHeight ? Meui.Units.largeSpacing * 2
+                                                                          : root.height - root.desktopAvailableHeight + Meui.Units.largeSpacing * 2
+        anchors.leftMargin: root.width === root.desktopAvailableWidth ? Meui.Units.largeSpacing * 2
+                                                                      : (root.width - root.desktopAvailableWidth) * 2
+        anchors.rightMargin: root.width === root.desktopAvailableWidth ? Meui.Units.largeSpacing * 2
+                                                                       : root.width - root.desktopAvailableWidth
+
         spacing: Meui.Units.largeSpacing * 2
 
         Item {
@@ -95,8 +105,8 @@ Item {
             LauncherGridView {
                 id: grid
                 anchors.fill: parent
-                anchors.leftMargin: gridItem.width * 0.05
-                anchors.rightMargin: gridItem.width * 0.05
+                anchors.leftMargin: gridItem.width * 0.02
+                anchors.rightMargin: gridItem.width * 0.02
                 Layout.alignment: Qt.AlignHCenter
             }
         }
