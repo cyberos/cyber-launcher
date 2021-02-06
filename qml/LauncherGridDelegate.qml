@@ -1,6 +1,6 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.1
-import QtGraphicalEffects 1.0
+import QtGraphicalEffects 1.15
 import MeuiKit 1.0 as Meui
 
 Item {
@@ -85,12 +85,5 @@ Item {
         width: parent.width - 2 * 10
         height: fontMetrics.height
         color: "white"
-
-        layer.enabled: true
-        layer.effect: Glow {
-            color: "#80000000"
-            samples: 15
-            spread: 0.3
-        }
     }
 }
