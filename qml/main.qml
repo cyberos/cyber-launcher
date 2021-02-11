@@ -108,6 +108,14 @@ Item {
                 anchors.leftMargin: gridItem.width * 0.02
                 anchors.rightMargin: gridItem.width * 0.02
                 Layout.alignment: Qt.AlignHCenter
+
+                Label {
+                    anchors.centerIn: parent
+                    text: qsTr("Not found")
+                    font.pointSize: 30
+                    color: "white"
+                    visible: grid.count === 0
+                }
             }
         }
 
