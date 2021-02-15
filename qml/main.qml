@@ -9,8 +9,8 @@ import MeuiKit 1.0 as Meui
 Item {
     id: root
 
-    property var desktopAvailableHeight: Screen.desktopAvailableHeight
-    property var desktopAvailableWidth: Screen.desktopAvailableWidth
+    property var screenHeight: Screen.height
+    property var availableHeight: Screen.desktopAvailableHeight
 
     Wallpaper {
         id: backend
@@ -56,14 +56,14 @@ Item {
     ColumnLayout {
         id: mainLayout
         anchors.fill: parent
-        anchors.topMargin: root.height === root.desktopAvailableHeight ? Meui.Units.largeSpacing * 2
-                                                                       : (root.height - root.desktopAvailableHeight) / 2
-        anchors.bottomMargin: root.height === root.desktopAvailableHeight ? Meui.Units.largeSpacing * 2
-                                                                          : root.height - root.desktopAvailableHeight + Meui.Units.largeSpacing * 2
-        anchors.leftMargin: root.width === root.desktopAvailableWidth ? Meui.Units.largeSpacing * 2
-                                                                      : (root.width - root.desktopAvailableWidth) * 2
-        anchors.rightMargin: root.width === root.desktopAvailableWidth ? Meui.Units.largeSpacing * 2
-                                                                       : root.width - root.desktopAvailableWidth
+        anchors.topMargin: Meui.Units.largeSpacing * 2
+        /* 
+         * This might break on setups with screens on top of
+         * other screens. For now, this is optimal though.
+         */
+        anchors.bottomMargin: Meui.Units.largeSpacing * 2 + (root.screenHeight - root.availableHeight)
+        anchors.leftMargin: Meui.Units.largeSpacing * 2
+        anchors.rightMargin: Meui.Units.largeSpacing * 2
 
         spacing: Meui.Units.largeSpacing * 2
 
