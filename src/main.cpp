@@ -28,6 +28,8 @@
 #include "wallpaper.h"
 
 #include <QDebug>
+#include <QTranslator>
+#include <QLocale>
 
 #define DBUS_NAME "org.cyber.Launcher"
 #define DBUS_PATH "/Launcher"
@@ -61,6 +63,17 @@ int main(int argc, char *argv[])
         QDBusInterface iface(DBUS_NAME, DBUS_PATH, DBUS_INTERFACE, dbus);
         iface.call("toggle");
         return -1;
+    }
+
+    QLocale locale;
+    QString qmFilePath = QString("%1/%2.qm").arg("/usr/share/cyber-launcher/translations/").arg(locale.name());
+    if (QFile::exists(qmFilePath)) {
+        QTranslator *translator = new QTranslator(app.instance());
+        if (translator->load(qmFilePath)) {
+            app.installTranslator(translator);
+        } else {
+            translator->deleteLater();
+        }
     }
 
     Launcher launcher;
