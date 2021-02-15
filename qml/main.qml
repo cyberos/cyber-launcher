@@ -9,8 +9,8 @@ import MeuiKit 1.0 as Meui
 Item {
     id: root
 
-    property var screenHeight: Screen.height
-    property var availableHeight: Screen.desktopAvailableHeight
+    property var availableWidth: launcher.screenAvailableWidth
+    property var availableHeight: launcher.screenAvailableHeight
 
     Wallpaper {
         id: backend
@@ -61,8 +61,8 @@ Item {
          * This might break on setups with screens on top of
          * other screens. For now, this is optimal though.
          */
-        anchors.bottomMargin: Meui.Units.largeSpacing * 2 + (root.screenHeight - root.availableHeight)
-        anchors.leftMargin: Meui.Units.largeSpacing * 2
+        anchors.bottomMargin: Meui.Units.largeSpacing * 2 + (root.height - root.availableHeight)
+        anchors.leftMargin: Meui.Units.largeSpacing * 2 + (root.width - root.availableWidth)
         anchors.rightMargin: Meui.Units.largeSpacing * 2
 
         spacing: Meui.Units.largeSpacing * 2

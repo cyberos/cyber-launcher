@@ -30,6 +30,9 @@
 Launcher::Launcher(QQuickView *w)
   : QQuickView(w)
 {
+    m_screenAvailableWidth = qApp->primaryScreen()->availableGeometry().width();
+    m_screenAvailableHeight = qApp->primaryScreen()->availableGeometry().height();
+
     new LauncherAdaptor(this);
 
     engine()->rootContext()->setContextProperty("launcher", this);
@@ -46,6 +49,8 @@ Launcher::Launcher(QQuickView *w)
 
     connect(qApp->primaryScreen(), &QScreen::virtualGeometryChanged, this, &Launcher::resizeWindow, Qt::QueuedConnection);
     connect(qApp->primaryScreen(), &QScreen::geometryChanged, this, &Launcher::resizeWindow, Qt::QueuedConnection);
+    connect(qApp->primaryScreen(), &QScreen::availableGeometryChanged, this, &Launcher::onAvailableGeometryChanged, Qt::QueuedConnection);
+
     connect(this, &QQuickView::activeChanged, this, &Launcher::onActiveChanged);
 }
 
@@ -62,6 +67,16 @@ void Launcher::hide()
 void Launcher::toggle()
 {
     isVisible() ? hide() : show();
+}
+
+int Launcher::screenAvailableWidth()
+{
+    return m_screenAvailableWidth;
+}
+
+int Launcher::screenAvailableHeight()
+{
+    return m_screenAvailableHeight;
 }
 
 void Launcher::showEvent(QShowEvent *e)
@@ -81,4 +96,17 @@ void Launcher::onActiveChanged()
 {
     if (!isActive())
         Launcher::hide();
+}
+
+void Launcher::onAvailableGeometryChanged(const QRect &geometry)
+{
+    if (geometry.width() != m_screenAvailableWidth) {
+        m_screenAvailableWidth = geometry.width();
+        emit screenAvailableWidthChanged();
+    }
+
+    if (geometry.height() != m_screenAvailableHeight) {
+        m_screenAvailableHeight = geometry.height();
+        emit screenAvailableHeightChanged();
+    }
 }

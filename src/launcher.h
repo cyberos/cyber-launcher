@@ -26,6 +26,8 @@
 class Launcher : public QQuickView
 {
     Q_OBJECT
+    Q_PROPERTY(int screenAvailableWidth READ screenAvailableWidth NOTIFY screenAvailableWidthChanged)
+    Q_PROPERTY(int screenAvailableHeight READ screenAvailableHeight NOTIFY screenAvailableHeightChanged)
 
 public:
     Launcher(QQuickView *w = nullptr);
@@ -34,12 +36,26 @@ public:
     void hide();
     void toggle();
 
+    int screenAvailableWidth();
+    int screenAvailableHeight();
+
+signals:
+    void screenAvailableWidthChanged();
+    void screenAvailableHeightChanged();
+
 protected:
     void showEvent(QShowEvent *e) override;
 
 private:
     void resizeWindow();
     void onActiveChanged();
+
+private slots:
+    void onAvailableGeometryChanged(const QRect &geometry);
+
+private:
+    int m_screenAvailableWidth;
+    int m_screenAvailableHeight;
 };
 
 #endif // LAUNCHER_H
