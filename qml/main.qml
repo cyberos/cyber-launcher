@@ -56,7 +56,7 @@ Item {
     ColumnLayout {
         id: mainLayout
         anchors.fill: parent
-        anchors.topMargin: Meui.Units.largeSpacing * 2
+        anchors.topMargin: Meui.Units.largeSpacing * 3.75
         /* 
          * This might break on setups with screens on top of
          * other screens. For now, this is optimal though.
