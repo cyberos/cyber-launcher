@@ -22,7 +22,7 @@
     <message>
         <location filename="../qml/main.qml" line="81"/>
         <source>Search</source>
-        <translation type="unfinished">Søk</translation>
+        <translation>Søk</translation>
     </message>
     <message>
         <location filename="../qml/main.qml" line="114"/>
