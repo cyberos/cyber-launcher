@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/launcher.cpp" line="44"/>
         <source>Launcher</source>
-        <translation type="unfinished"></translation>
+        <translation>Oppstarter</translation>
     </message>
 </context>
 <context>
@@ -27,7 +27,7 @@
     <message>
         <location filename="../qml/main.qml" line="114"/>
         <source>Not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Ikke funnet</translation>
     </message>
 </context>
 </TS>
