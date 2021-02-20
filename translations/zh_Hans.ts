@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/launcher.cpp" line="44"/>
         <source>Launcher</source>
-        <translation type="unfinished"></translation>
+        <translation>启动器</translation>
     </message>
 </context>
 <context>
@@ -14,7 +14,7 @@
     <message>
         <location filename="../qml/LauncherGridDelegate.qml" line="46"/>
         <source>Open</source>
-        <translation type="unfinished"></translation>
+        <translation>打开</translation>
     </message>
 </context>
 <context>
@@ -27,7 +27,7 @@
     <message>
         <location filename="../qml/main.qml" line="114"/>
         <source>Not found</source>
-        <translation type="unfinished"></translation>
+        <translation>未找到</translation>
     </message>
 </context>
 </TS>
