@@ -14,7 +14,7 @@
     <message>
         <location filename="../qml/LauncherGridDelegate.qml" line="46"/>
         <source>Open</source>
-        <translation type="unfinished"></translation>
+        <translation>Otevřít</translation>
     </message>
 </context>
 <context>
