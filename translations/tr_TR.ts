@@ -22,12 +22,12 @@
     <message>
         <location filename="../qml/main.qml" line="81"/>
         <source>Search</source>
-        <translation type="unfinished">Arama</translation>
+        <translation>Ara</translation>
     </message>
     <message>
         <location filename="../qml/main.qml" line="114"/>
         <source>Not found</source>
-        <translation type="unfinished"></translation>
+        <translation>Bulunamadı</translation>
     </message>
 </context>
 </TS>
