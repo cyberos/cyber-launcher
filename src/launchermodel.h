@@ -23,6 +23,7 @@
 #include <QObject>
 #include <QLoggingCategory>
 #include <QAbstractListModel>
+#include <QStandardPaths>
 
 class LauncherItem;
 class LauncherModel : public QAbstractListModel
