@@ -36,6 +36,7 @@ Launcher::Launcher(QQuickView *w)
     new LauncherAdaptor(this);
 
     engine()->rootContext()->setContextProperty("launcher", this);
+    engine()->addImageProvider(QStringLiteral("iconthemefallback"), new IconThemeImageProvider());
 
     setFlags(Qt::FramelessWindowHint);
     setResizeMode(QQuickView::SizeRootObjectToView);

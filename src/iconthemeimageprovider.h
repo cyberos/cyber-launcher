@@ -21,6 +21,9 @@
 #define ICONTHEMEIMAGEPROVIDER_H
 
 #include <QtQuick/QQuickImageProvider>
+#include <QFile>
+
+#define PIXMAP_PATH "/usr/share/pixmaps/"
 
 class IconThemeImageProvider : public QQuickImageProvider
 {

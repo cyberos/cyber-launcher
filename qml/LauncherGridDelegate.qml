@@ -21,7 +21,7 @@ Item {
 
         property real size: height
 
-        source: "image://icontheme/" + model.iconName
+        source: "image://iconthemefallback/" + model.iconName
         sourceSize.width: height
         sourceSize.height: height
         width: height
