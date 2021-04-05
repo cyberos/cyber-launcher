@@ -28,7 +28,7 @@
     <message>
         <location filename="../qml/main.qml" line="114"/>
         <source>Not found</source>
-        <translation>No encontrado</translation>
+        <translation>Sin resultados</translation>
     </message>
 </context>
 </TS>
