@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/launcher.cpp" line="44"/>
         <source>Launcher</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Пускова установка</translation>
     </message>
 </context>
 <context>
@@ -14,7 +14,7 @@
     <message>
         <location filename="../qml/LauncherGridDelegate.qml" line="46"/>
         <source>Open</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">відчинено</translation>
     </message>
 </context>
 <context>
@@ -22,12 +22,12 @@
     <message>
         <location filename="../qml/main.qml" line="81"/>
         <source>Search</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Пошук</translation>
     </message>
     <message>
         <location filename="../qml/main.qml" line="114"/>
         <source>Not found</source>
-        <translation type="unfinished"></translation>
+        <translation type="unfinished">Не знайдено</translation>
     </message>
 </context>
 </TS>
