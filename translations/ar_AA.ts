@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/launcher.cpp" line="44"/>
         <source>Launcher</source>
-        <translation type="unfinished">منصة الإطلاق</translation>
+        <translation>قاذفة</translation>
     </message>
 </context>
 <context>
@@ -14,7 +14,7 @@
     <message>
         <location filename="../qml/LauncherGridDelegate.qml" line="46"/>
         <source>Open</source>
-        <translation type="unfinished">مفتوح</translation>
+        <translation>فتح</translation>
     </message>
 </context>
 <context>
@@ -22,12 +22,12 @@
     <message>
         <location filename="../qml/main.qml" line="81"/>
         <source>Search</source>
-        <translation type="unfinished">البحث</translation>
+        <translation>بحث</translation>
     </message>
     <message>
         <location filename="../qml/main.qml" line="114"/>
         <source>Not found</source>
-        <translation type="unfinished">غير موجود</translation>
+        <translation>غير موجود</translation>
     </message>
 </context>
 </TS>
