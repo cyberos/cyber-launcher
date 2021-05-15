@@ -6,7 +6,7 @@
     <message>
         <location filename="../src/launcher.cpp" line="44"/>
         <source>Launcher</source>
-        <translation type="unfinished">Покретач</translation>
+        <translation>Покретач</translation>
     </message>
 </context>
 <context>
@@ -14,7 +14,7 @@
     <message>
         <location filename="../qml/LauncherGridDelegate.qml" line="46"/>
         <source>Open</source>
-        <translation type="unfinished">Отвори</translation>
+        <translation>Отвори</translation>
     </message>
 </context>
 <context>
@@ -22,12 +22,12 @@
     <message>
         <location filename="../qml/main.qml" line="81"/>
         <source>Search</source>
-        <translation type="unfinished">Претрага</translation>
+        <translation>Претрага</translation>
     </message>
     <message>
         <location filename="../qml/main.qml" line="114"/>
         <source>Not found</source>
-        <translation type="unfinished">Није пронађен</translation>
+        <translation>Није пронађен</translation>
     </message>
 </context>
 </TS>
