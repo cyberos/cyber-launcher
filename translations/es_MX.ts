@@ -7,7 +7,7 @@
         <location filename="../src/launcher.cpp" line="44"/>
         <source>Launcher</source>
         <translatorcomment>There&apos;s no apropiate translate, it should be &quot;lanzador&quot; but doesn&apos;t fit</translatorcomment>
-        <translation></translation>
+        <translation>Launcher</translation>
     </message>
 </context>
 <context>
